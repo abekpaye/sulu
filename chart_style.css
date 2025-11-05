@@ -1,0 +1,217 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fafafa;
+  color: #111;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 60px;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #ffffff;
+}
+
+.logo a {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #000;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.logo a:hover {
+  color: #888;
+}
+
+.topnavbar ul {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.topnavbar a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.topnavbar a:hover {
+  color: #666;
+}
+
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  margin-left: 60px;
+  padding: 15px 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  transition: 0.3s;
+  position: relative;
+}
+
+.navbar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 1.5px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+.size-chart-section {
+  background: #fbfbfb;
+  padding: 48px 60px;
+}
+
+.size-chart-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.size-chart-table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  overflow-x: auto;
+}
+
+.size-chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.size-chart-table thead th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  color: #222;
+  background: rgba(197, 194, 194, 0.045);
+}
+
+.size-chart-table tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #333;
+}
+
+.size-chart-table .size-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #111;
+  width: 90px;
+}
+
+.size-chart-table tbody tr:hover {
+  background: rgba(17,17,17,0.02);
+}
+
+.size-note {
+  margin-top: 12px;
+  color: #666;
+  font-size: 13px;
+}
+
+footer {
+  background-color: #151515;
+  color: #eee;
+  padding: 60px 80px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+.footer-left p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-left a {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-left a:hover {
+  color: #999;
+}
+
+.footer-center p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.footer-right p {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.social-links a:hover {
+  color: #999;
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="category_style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <title>sūlu</title>
+</head>
+<body>
+  <header>
+      <div class="header-container">
+          <div class="logo"><a href="index.html">sūlu</a></div>
+          <nav class="topnavbar">
+              <ul>
+                  <li><a href="signin.html">Sign in</a></li>
+                  <li><a href="cart.html">Cart</a></li>
+              </ul>
+          </nav>
+      </div>
+      <nav class="navbar">
+          <ul>
+              <li><a href="best_sellers.html">Best sellers</a></li>
+              <li><a href="tops.html">Tops</a></li>
+              <li><a href="bottoms.html">Bottoms</a></li>
+              <li><a href="pyjamas.html">Pyjamas</a></li>
+          </ul>
+      </nav>
+  </header>
+
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="carousel/carousel-1.jpg" alt="new collection 1" class="d-block w-100">
+      </div>
+      <div class="carousel-item">
+        <img src="carousel/carousel-2.jpg" alt="new collection 2" class="d-block w-100">
+      </div>
+      <div class="carousel-item">
+        <img src="carousel/carousel-3.jpg" alt="new collection 3" class="d-block w-100">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <div class="product-grid container my-5">
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/1.png" alt="Cooton pyjamas" class="product-image">
+          <div class="product-title">Cotton pyjamas</div>
+          <div class="product-price">15500tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/2.png" alt="Plaid pyjamas" class="product-image">
+          <div class="product-title">Plaid pyjamas</div>
+          <div class="product-price">15000tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/3.png" alt="Fur lined hoodie" class="product-image">
+          <div class="product-title">Fur lined hoodie</div>
+          <div class="product-price">26000tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/4.png" alt="Christmas dress" class="product-image">
+          <div class="product-title">Christmas dress</div>
+          <div class="product-price">19000tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/5.png" alt="atin pajamas" class="product-image">
+          <div class="product-title">Satin pajamas</div>
+          <div class="product-price">1500tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="product-card">
+          <img src="xmas-products/6.png" alt="Short pyjamas" class="product-image">
+          <div class="product-title">Short pyjamas</div>
+          <div class="product-price">12000tg</div>
+          <div class="size-container">
+            <label for="size1">Size:</label>
+            <select id="size1" class="size-select">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">
+        <p>© 2025 sūlu. All rights reserved.</p>
+        <div class="links">
+          <a class="about" href="about.html">About Us</a>
+          <a class="chart" href="chart.html">Size chart</a>
+        </div>
+      </div>
+
+      <div class="footer-center">
+        <p>&#128222 +7 707 123 45 67</p>
+        <p>&#128232 sulu.store@gmail.com</p>
+      </div>
+
+      <div class="footer-right">
+        <p>Follow us:</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/skims/">Instagram</a>
+          <a href="https://www.tiktok.com/@skims">TikTok</a>
+          <a href="https://www.youtube.com/c/skims">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="cart_add.js"></script>
+</body>
+</html>

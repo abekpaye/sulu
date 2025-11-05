@@ -1,0 +1,292 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fafafa;
+  color: #111;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 60px;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #ffffff;
+}
+
+.logo a {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #000;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.logo a:hover {
+  color: #888;
+}
+
+.topnavbar ul {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.topnavbar a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.topnavbar a:hover {
+  color: #666;
+}
+
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  margin-left: 60px;
+  padding: 15px 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  transition: 0.3s;
+  position: relative;
+}
+
+.navbar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 1.5px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.cart-container {
+  max-width: 900px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 20px 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.cart-item:hover {
+  transform: translateY(-3px);
+}
+
+.cart-item img {
+  width: 90px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.item-details {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.item-details h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.item-details p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 15px;
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity {
+  font-size: 15px;
+  color: #333;
+}
+
+.remove-btn {
+  background-color: transparent;
+  border: none;
+  color: #888;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.remove-btn:hover {
+  color: #000;
+}
+
+.cart-summary {
+  max-width: 900px;
+  margin: 40px auto 100px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px;
+}
+
+.total-box {
+  font-size: 20px;
+  font-weight: 600;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 18px 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.purchase-btn {
+  width: 180px;
+  background-color: #111;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.purchase-btn:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .item-details {
+    margin-left: 0;
+  }
+
+  .cart-summary {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+footer {
+  background-color: #151515;
+  color: #eee;
+  padding: 60px 80px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+.footer-left p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-left a {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-left a:hover {
+  color: #999;
+}
+
+.footer-center p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.footer-right p {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.social-links a:hover {
+  color: #999;
+}
