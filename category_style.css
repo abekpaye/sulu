@@ -148,7 +148,6 @@ body {
   border-color: #111;
 }
 
-
 .add-to-cart-btn {
   background-color: #111;
   color: #fff;
@@ -163,6 +162,41 @@ body {
 
 .add-to-cart-btn:hover {
   background-color: #333;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  background-color: #111;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 500;
+  width: fit-content;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+
+.quantity-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: 0.2s;
+}
+
+.quantity-btn:hover {
+  color: #ccc;
+}
+
+.quantity-number {
+  font-size: 15px;
+  font-weight: 600;
 }
 
 footer {
