@@ -17,8 +17,7 @@
           <div class="logo"><a href="index.html">sūlu</a></div>
           <nav class="topnavbar">
               <ul>
-                  <li><a href="signin.html">Sign in</a></li>
-                  <li><a href="cart.html">Cart</a></li>
+                  <li><a href="cart.html">Cart<span id="cart-count">0</span></a></li>
               </ul>
           </nav>
       </div>
@@ -31,148 +30,150 @@
           </ul>
       </nav>
   </header>
-
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  
+    <main>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="carousel/carousel-1.jpg" alt="new collection 1" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+          <img src="carousel/carousel-2.jpg" alt="new collection 2" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+          <img src="carousel/carousel-3.jpg" alt="new collection 3" class="d-block w-100">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="carousel/carousel-1.jpg" alt="new collection 1" class="d-block w-100">
-      </div>
-      <div class="carousel-item">
-        <img src="carousel/carousel-2.jpg" alt="new collection 2" class="d-block w-100">
-      </div>
-      <div class="carousel-item">
-        <img src="carousel/carousel-3.jpg" alt="new collection 3" class="d-block w-100">
+
+    <div class="product-grid container my-5">
+      <div class="row g-4 justify-content-center">
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/1.png" alt="Cooton pyjamas" class="product-image">
+            <div class="product-title">Cotton pyjamas</div>
+            <div class="product-price">15500tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/2.png" alt="Plaid pyjamas" class="product-image">
+            <div class="product-title">Plaid pyjamas</div>
+            <div class="product-price">15000tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/3.png" alt="Fur lined hoodie" class="product-image">
+            <div class="product-title">Fur lined hoodie</div>
+            <div class="product-price">26000tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/4.png" alt="Christmas dress" class="product-image">
+            <div class="product-title">Christmas dress</div>
+            <div class="product-price">19000tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/5.png" alt="atin pajamas" class="product-image">
+            <div class="product-title">Satin pyjamas</div>
+            <div class="product-price">1500tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="product-card">
+            <img src="xmas-products/6.png" alt="Short pyjamas" class="product-image">
+            <div class="product-title">Short pyjamas</div>
+            <div class="product-price">12000tg</div>
+            <div class="size-container">
+              <label for="size1">Size:</label>
+              <select id="size1" class="size-select">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
-  <div class="product-grid container my-5">
-    <div class="row g-4 justify-content-center">
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/1.png" alt="Cooton pyjamas" class="product-image">
-          <div class="product-title">Cotton pyjamas</div>
-          <div class="product-price">15500tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/2.png" alt="Plaid pyjamas" class="product-image">
-          <div class="product-title">Plaid pyjamas</div>
-          <div class="product-price">15000tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/3.png" alt="Fur lined hoodie" class="product-image">
-          <div class="product-title">Fur lined hoodie</div>
-          <div class="product-price">26000tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/4.png" alt="Christmas dress" class="product-image">
-          <div class="product-title">Christmas dress</div>
-          <div class="product-price">19000tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/5.png" alt="atin pajamas" class="product-image">
-          <div class="product-title">Satin pyjamas</div>
-          <div class="product-price">1500tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="col-6 col-md-4 col-lg-2">
-        <div class="product-card">
-          <img src="xmas-products/6.png" alt="Short pyjamas" class="product-image">
-          <div class="product-title">Short pyjamas</div>
-          <div class="product-price">12000tg</div>
-          <div class="size-container">
-            <label for="size1">Size:</label>
-            <select id="size1" class="size-select">
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-            </select>
-          </div>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
+  </main>
+  
   <footer>
     <div class="footer-container">
       <div class="footer-left">

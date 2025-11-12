@@ -83,12 +83,21 @@ body {
   width: 100%;
 }
 
-.size-chart-section {
-  background: #fbfbfb;
-  padding: 48px 60px;
+#cart-count {
+    display: inline-block;
+    background-color: red;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+    margin-left: 5px;
+    vertical-align: top;
 }
 
-.size-chart-wrapper {
+main {
+  background: #fbfbfb;
+  padding: 48px 60px;
   max-width: 1120px;
   margin: 0 auto;
 }

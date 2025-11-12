@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const cartContainer = document.getElementById("cart-container");
   const totalBox = document.getElementById("cart-total");
+  const purchaseBtn = document.querySelector(".purchase-btn");
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -10,8 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (cart.length === 0) {
       cartContainer.innerHTML = "<p style='text-align:center; color:#666;'>Your cart is empty.</p>";
-      totalBox.textContent = "Total: 0 tg";
-      return;
     }
 
     cart.forEach((item, index) => {
@@ -33,10 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       cartContainer.appendChild(itemDiv);
 
-      total += parseInt(item.price.replace("tg", "")) * item.quantity;
+      total += parseInt(item.price.replace(/\D/g, "")) * item.quantity;
     });
 
     totalBox.textContent = `Total: ${total} tg`;
+
+    if (total === 0) {
+      purchaseBtn.classList.add("disabled"); 
+    } else {
+      purchaseBtn.classList.remove("disabled");
+    }
 
     document.querySelectorAll(".remove-btn").forEach(button => {
       button.addEventListener("click", e => {
@@ -47,6 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  purchaseBtn.addEventListener("click", function (e) {
+    const total = parseInt(totalBox.textContent.replace(/\D/g, ""));
+    if (total === 0) {
+      e.preventDefault(); 
+      alert("Your cart is empty. Cannot proceed to checkout."); 
+    }
+  });
 
   renderCart();
 });

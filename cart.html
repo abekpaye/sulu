@@ -17,8 +17,7 @@
           <div class="logo"><a href="index.html">sūlu</a></div>
           <nav class="topnavbar">
               <ul>
-                  <li><a href="signin.html">Sign in</a></li>
-                  <li><a href="cart.html">Cart</a></li>
+                  <li><a href="cart.html">Cart<span id="cart-count">0</span></a></li>
               </ul>
           </nav>
       </div>
@@ -32,16 +31,18 @@
       </nav>
   </header>
 
-  <h1>Your Cart</h1>
+  <main>
+    <h1>Your Cart</h1>
 
-  <div class="cart-container" id="cart-container"></div>
+    <div class="cart-container" id="cart-container"></div>
 
-  <div class="cart-summary">
-    <div>
-      <div class="total-box" id="cart-total">Total: 0 tg</div>
-      <a href="signin.html" class="purchase-btn">Purchase</a>
+    <div class="cart-summary">
+      <div>
+        <div class="total-box" id="cart-total">Total: 0 tg</div>
+        <a href="checkout.html" class="purchase-btn">Purchase</a>
+      </div>
     </div>
-  </div>
+  </main>
   
   <footer>
     <div class="footer-container">
@@ -70,5 +71,6 @@
   </footer>
 
   <script src="cart.js"></script>  
+  <script src="cart_add.js"></script>
 </body>
 </html>
