@@ -37,12 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     totalBox.textContent = `Total: ${total} tg`;
 
-    if (total === 0) {
-      purchaseBtn.classList.add("disabled"); 
-    } else {
-      purchaseBtn.classList.remove("disabled");
-    }
-
     document.querySelectorAll(".remove-btn").forEach(button => {
       button.addEventListener("click", e => {
         const index = e.target.dataset.index;
