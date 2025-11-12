@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       address: document.getElementById("address").value,
       phone: document.getElementById("phone").value,
       email: document.getElementById("email").value,
+      paymentMethod: document.getElementById("paymentMethod").value,
       items: emailItems,
       total: `${total} tg`,
       delivery: `${DELIVERY_COST} tg`,

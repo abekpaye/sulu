@@ -60,6 +60,16 @@
         <input type="email" id="email" class="form-control" placeholder="Enter your email" required />
       </div>
 
+      <div class="form-group">
+        <label for="paymentMethod">Payment Method</label>
+        <select id="paymentMethod" class="form-control" required>
+          <option value="" disabled selected>Select your payment method</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="PayPal">PayPal</option>
+          <option value="Cash on Delivery">Cash on Delivery</option>
+        </select>
+      </div>
+
       <div class="summary-box">
         <p>Items total: <span id="total-price">0 tg</span></p>
         <p>Delivery: <span id="delivery-price">1000 tg</span></p>
