@@ -35,35 +35,35 @@
    <main>
     <h1>Checkout</h1>
 
-    <form id="checkout-form" class="needs-validation" novalidate>
+  <form action="/contact" method="POST" id="checkout-form" class="needs-validation" novalidate>
       <div class="form-group">
         <label for="firstName">First name</label>
-        <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" required />
+        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter your first name" required />
       </div>
 
       <div class="form-group">
         <label for="lastName">Last name</label>
-        <input type="text" id="lastName" class="form-control" placeholder="Enter your last name" required />
+        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter your last name" required />
       </div>
 
       <div class="form-group">
         <label for="address">Address</label>
-        <input type="text" id="address" class="form-control" placeholder="Enter your full delivery address" required />
+        <input type="text" id="address" name="address" class="form-control" placeholder="Enter your full delivery address" required />
       </div>
 
       <div class="form-group">
         <label for="phone">Phone number</label>
-        <input type="tel" id="phone" class="form-control" placeholder="Enter your number" required />
+        <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter your number" required />
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="Enter your email" required />
+        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required />
       </div>
 
       <div class="form-group">
         <label for="paymentMethod">Payment Method</label>
-        <select id="paymentMethod" class="form-control" required>
+        <select id="paymentMethod" name="paymentMethod" class="form-control" required>
           <option value="" disabled selected>Select your payment method</option>
           <option value="Credit Card">Credit Card</option>
           <option value="PayPal">PayPal</option>
