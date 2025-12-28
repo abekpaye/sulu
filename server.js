@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const app = express();
 
@@ -71,7 +72,47 @@ app.get('/item/:id', (req, res) => {
   `);
 });
 
+app.post('/contact', (req, res) => {
+  const { firstName, lastName, address, phone, email, paymentMethod } = req.body;
 
+  if (!firstName || !lastName || !address || !phone || !email || !paymentMethod) {
+    return res.status(400).send("Bad Request: all fields are required");
+  }
+
+  const newOrder = {
+    firstName,
+    lastName,
+    address,
+    phone,
+    email,
+    paymentMethod,
+    date: new Date().toISOString()
+  };
+
+  const filePath = path.join(__dirname, 'orders.json');
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    let orders = [];
+
+    if (!err && data) {
+      orders = JSON.parse(data);
+    }
+
+    orders.push(newOrder);
+
+    fs.writeFile(filePath, JSON.stringify(orders, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Server error");
+      }
+
+      res.send(`
+        <h2>Order received</h2>
+        <p>Thank you, ${firstName}. Your order has been saved.</p>
+        <a href="/">Back to home</a>
+      `);
+    });
+  });
+});
 
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
