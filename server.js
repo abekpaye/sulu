@@ -42,6 +42,37 @@ app.get('/checkout', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'checkout.html'));
 });
 
+
+app.get('/search', (req, res) => {
+  const q = req.query.q;
+
+  if (!q) {
+    return res.status(400).send("Bad Request: query parameter 'q' is missing");
+  }
+
+  res.send(`
+    <h1>Search Page</h1>
+    <p>You searched for: <b>${q}</b></p>
+  `);
+});
+
+
+
+app.get('/item/:id', (req, res) => {
+  const id = req.params.id;
+
+  if (!id) {
+    return res.status(400).send("Bad Request: ID is missing");
+  }
+
+  res.send(`
+    <h1>Item Page</h1>
+    <p>Item ID: <b>${id}</b></p>
+  `);
+});
+
+
+
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
