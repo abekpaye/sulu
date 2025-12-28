@@ -5,6 +5,11 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
@@ -43,7 +48,6 @@ app.get('/checkout', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'checkout.html'));
 });
 
-
 app.get('/search', (req, res) => {
   const q = req.query.q;
 
@@ -56,8 +60,6 @@ app.get('/search', (req, res) => {
     <p>You searched for: <b>${q}</b></p>
   `);
 });
-
-
 
 app.get('/item/:id', (req, res) => {
   const id = req.params.id;
@@ -95,7 +97,11 @@ app.post('/contact', (req, res) => {
     let orders = [];
 
     if (!err && data) {
-      orders = JSON.parse(data);
+      try {
+        orders = JSON.parse(data);
+      } catch {
+        orders = [];
+      }
     }
 
     orders.push(newOrder);
@@ -105,7 +111,7 @@ app.post('/contact', (req, res) => {
         return res.status(500).send("Server error");
       }
 
-      res.send(`
+      res.status(201).send(`
         <h2>Order received</h2>
         <p>Thank you, ${firstName}. Your order has been saved.</p>
         <a href="/">Back to home</a>
@@ -114,10 +120,17 @@ app.post('/contact', (req, res) => {
   });
 });
 
+app.get('/api/info', (req, res) => {
+  res.json({
+    project: "Assignment 2 – Part 1",
+    description: "Server-side Request Handling in Express.js"
+  });
+});
+
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 app.listen(3000, () => {
-  console.log(`Server running at http://localhost:3000`);
+  console.log('Server running at http://localhost:3000');
 });
