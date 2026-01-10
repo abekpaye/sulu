@@ -5,7 +5,6 @@ const db = require('./db');
 
 const app = express();
 
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -15,7 +14,6 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
@@ -65,7 +63,6 @@ app.get('/item/:id', (req, res) => {
   res.send(`<h1>Item</h1><p>Item ID: ${req.params.id}</p>`);
 });
 
-
 app.post('/contact', (req, res) => {
   const { firstName, lastName, address, phone, email, paymentMethod } = req.body;
 
@@ -105,16 +102,12 @@ app.post('/contact', (req, res) => {
   });
 });
 
-/*API CRUD*/
-
-// GET all items
 app.get('/api/items', (req, res) => {
   db.all('SELECT * FROM items ORDER BY id ASC', [], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.status(200).json(rows);
   });
 });
-
 
 app.get('/api/items/:id', (req, res) => {
   const id = Number(req.params.id);
@@ -128,7 +121,6 @@ app.get('/api/items/:id', (req, res) => {
   });
 });
 
-// POST 
 app.post('/api/items', (req, res) => {
   const { title, description } = req.body;
   if (!title || !description) {
@@ -141,12 +133,15 @@ app.post('/api/items', (req, res) => {
     function (err) {
       if (err) return res.status(500).json({ error: 'Database error' });
 
-      res.status(201).json({ id: this.lastID, title, description });
+      res.status(201).json({
+        id: this.lastID,
+        title,
+        description
+      });
     }
   );
 });
 
-// PUT update
 app.put('/api/items/:id', (req, res) => {
   const id = Number(req.params.id);
   const { title, description } = req.body;
@@ -170,7 +165,6 @@ app.put('/api/items/:id', (req, res) => {
   );
 });
 
-// DELETE 
 app.delete('/api/items/:id', (req, res) => {
   const id = Number(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
@@ -185,11 +179,9 @@ app.delete('/api/items/:id', (req, res) => {
   });
 });
 
-//  404
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
-
 
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
