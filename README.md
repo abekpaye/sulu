@@ -8,22 +8,6 @@ The application currently serves static pages and handles basic user interaction
 
 ---
 
-## Team Members
-- Perizat — SE-2429  
-- Ayanat — SE-2429  
-- Aida — SE-2429  
-- Quralai — SE-2429  
-
----
-
-## Team Member Contributions
-- **Perizat** — Prepared and updated the project documentation, including `README.md`, route descriptions, and running instructions.
-- **Ayanat** — Implemented server-side routing in Express.js, including query parameters (`/search`) and route parameters (`/item/:id`).
-- **Aida** — Worked on `server.js`, developed HTML pages, and ensured consistent navigation between frontend and backend.
-- **Quralai** — Implemented contact form handling, server-side validation, and saving submitted data into a JSON file using `fs.writeFile()`.
-
----
-
 ## Project Structure
 
 <pre>
