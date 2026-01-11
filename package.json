@@ -1,7 +1,7 @@
 {
   "name": "midterm_project",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project is a simple e-commerce web application built with **Node.js** and **Express.js**.   The main goal of this project is to demonstrate **server-side request handling**, including routing, middleware usage, query and route parameters, form handling, and returning HTML and JSON responses.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

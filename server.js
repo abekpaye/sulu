@@ -179,6 +179,11 @@ app.delete('/api/items/:id', (req, res) => {
   });
 });
 
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'API route not found' });
+});
+
+
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
