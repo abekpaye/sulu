@@ -7,12 +7,50 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const db = getDB();
-    const products = await db.collection('products').find().toArray();
+
+    // filtering
+    const filter = {};
+
+    if (req.query.category) {
+      filter.category = req.query.category;
+    }
+
+    if (req.query.inStock !== undefined) {
+      filter.inStock = req.query.inStock === 'true';
+    }
+
+    // sorting
+    const sort = {};
+    if (req.query.sort) {
+      const field = req.query.sort;
+      if (field.startsWith('-')) {
+        sort[field.substring(1)] = -1;
+      } else {
+        sort[field] = 1;
+      }
+    }
+
+    // 3️⃣ projection
+    const projection = {};
+    if (req.query.fields) {
+      req.query.fields.split(',').forEach(field => {
+        projection[field] = 1;
+      });
+    }
+
+    const products = await db
+      .collection('products')
+      .find(filter)
+      .sort(sort)
+      .project(projection)
+      .toArray();
+
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 router.get('/:id', async (req, res) => {
   try {
