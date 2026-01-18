@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
       }
     }
 
-    // 3️⃣ projection
+    // projection
     const projection = {};
     if (req.query.fields) {
       req.query.fields.split(',').forEach(field => {
