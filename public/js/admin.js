@@ -1,36 +1,35 @@
-document.getElementById('product-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const form = document.getElementById('product-form');
 
-  const product = {
-    title: document.getElementById('title').value,
-    price: Number(document.getElementById('price').value),
-    category: document.getElementById('category').value,
-    sizes: document.getElementById('sizes').value.split(',').map(s => s.trim()),
-    image: document.getElementById('image').value,
-    inStock: document.getElementById('inStock').checked
-  };
+async function loadProducts() {
+  const res = await fetch('/api/products');
+  const products = await res.json();
+  renderProducts(products);
+}
 
-  try {
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const product = {
+      title: document.getElementById('title').value,
+      price: Number(document.getElementById('price').value),
+      category: document.getElementById('category').value,
+      sizes: document.getElementById('sizes').value.split(',').map(s => s.trim()),
+      image: document.getElementById('image').value,
+      inStock: document.getElementById('inStock').checked
+    };
+
     const res = await fetch('/api/products', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(product)
     });
-
-    const data = await res.json();
 
     if (res.ok) {
       document.getElementById('message').innerHTML =
         `<div class="alert alert-success">Product added successfully</div>`;
-      e.target.reset();
-    } else {
-      document.getElementById('message').innerHTML =
-        `<div class="alert alert-danger">${data.error}</div>`;
+      form.reset();
+      loadProducts();
     }
-
-  } catch (error) {
-    console.error(error);
-  }
-});
+  });
+}

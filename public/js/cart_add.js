@@ -1,45 +1,44 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("add-to-cart")) return;
 
-  restoreCartState();
+  const button = e.target;
+  const productCard = button.closest(".product-card");
 
-  addToCartButtons.forEach(button => {
-    button.addEventListener("click", () => handleAddToCart(button));
-  });
+  const title = productCard.querySelector(".product-title").textContent;
+  const price = productCard.querySelector(".product-price").textContent;
+  const image = productCard.querySelector(".product-image")?.src || "";
+  const size = productCard.querySelector(".size-select")?.value || null;
 
-  function handleAddToCart(button) {
-    const productCard = button.closest(".product-card");
-    const title = productCard.querySelector(".product-title").textContent;
-    const price = productCard.querySelector(".product-price").textContent;
-    const image = productCard.querySelector(".product-image").src;
-    const size = productCard.querySelector(".size-select").value;
+  const product = {
+    id: button.dataset.id,
+    title,
+    price,
+    image,
+    size,
+    quantity: 1
+  };
 
-    const product = { title, price, image, size, quantity: 1 };
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existing = cart.find(
+    item => item.id === product.id && item.size === product.size
+  );
 
-    const existingProduct = cart.find(
-      item => item.title === product.title && item.size === product.size
-    );
-
-    if (existingProduct) {
-      existingProduct.quantity += 1;
-    } else {
-      cart.push(product);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push(product);
   }
 
-  function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const countEl = document.getElementById("cart-count");
-    countEl.textContent = totalCount;
-  }
-
-  function restoreCartState() {
-    updateCartCount();
-  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
 });
+
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const el = document.getElementById("cart-count");
+  if (el) el.textContent = total;
+}
+
+document.addEventListener("DOMContentLoaded", updateCartCount);
