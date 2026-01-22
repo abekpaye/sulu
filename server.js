@@ -50,6 +50,10 @@ app.get('/checkout', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'checkout.html'));
 });
 
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin.html'));
+});
+
 app.use('/api/products', productsRoutes);
 
 app.use('/api', (req, res) => {
