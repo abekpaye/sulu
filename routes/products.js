@@ -4,30 +4,45 @@ const { getDB } = require('../database/mongo');
 
 const router = express.Router();
 
+
+   //GET ALL PRODUCTS
+   
 router.get('/', async (req, res) => {
   try {
     const db = getDB();
 
-    // filtering
     const filter = {};
-
-    if (req.query.category) {
-      filter.category = req.query.category;
-    }
 
     if (req.query.inStock !== undefined) {
       filter.inStock = req.query.inStock === 'true';
     }
 
+    // category
+    if (req.query.category) {
+      filter.category = req.query.category;
+    }
+
+    // title search
+    if (req.query.name) {
+      filter.title = { $regex: req.query.name, $options: 'i' };
+    }
+
+    // price range
+    if (req.query.minPrice || req.query.maxPrice) {
+      filter.price = {};
+      if (req.query.minPrice) {
+        filter.price.$gte = Number(req.query.minPrice);
+      }
+      if (req.query.maxPrice) {
+        filter.price.$lte = Number(req.query.maxPrice);
+      }
+    }
+
     // sorting
     const sort = {};
-    if (req.query.sort) {
-      const field = req.query.sort;
-      if (field.startsWith('-')) {
-        sort[field.substring(1)] = -1;
-      } else {
-        sort[field] = 1;
-      }
+    if (req.query.sortBy) {
+      sort[req.query.sortBy] =
+        req.query.order === 'desc' ? -1 : 1;
     }
 
     // projection
@@ -46,11 +61,14 @@ router.get('/', async (req, res) => {
       .toArray();
 
     res.status(200).json(products);
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
+
+   //GET PRODUCT BY ID
 
 router.get('/:id', async (req, res) => {
   try {
@@ -69,11 +87,12 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    res.status(200).json(product);
-  } catch (error) {
+    res.json(product);
+  } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 router.post('/', async (req, res) => {
   try {

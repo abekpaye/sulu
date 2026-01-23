@@ -1,57 +1,66 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const path = window.location.pathname;
-
-  let category = null;
-
-  if (path === '/tops') category = 'tops';
-  if (path === '/bottoms') category = 'bottoms';
-  if (path === '/pyjamas') category = 'pyjamas';
-
-  let url = '/api/products';
-  if (category) {
-    url += `?category=${category}`;
-  }
-
-  const res = await fetch(url);
-  const products = await res.json();
-
-  renderProducts(products);
-});
-
-function renderProducts(products) {
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('filter-form');
   const container = document.getElementById('products-row');
+
   if (!container) return;
 
-  container.innerHTML = '';
+  async function loadProducts(query = '') {
+    const res = await fetch('/api/products' + query);
+    const products = await res.json();
+    renderProducts(products);
+  }
 
-  products.forEach(product => {
-    const col = document.createElement('div');
-    col.className = 'col-6 col-md-4 col-lg-2';
+  function renderProducts(products) {
+    container.innerHTML = '';
 
-    col.innerHTML = `
-      <div class="product-card">
-        <img src="${product.image}" class="product-image" alt="${product.title}">
+    if (!products || products.length === 0) {
+      container.innerHTML = '<p class="text-center">No products found</p>';
+      return;
+    }
 
-        <div class="product-title">${product.title}</div>
-        <div class="product-price">${product.price} tg</div>
+    products.forEach(product => {
+      const sizes = Array.isArray(product.sizes)
+        ? product.sizes.map(s => `<option>${s}</option>`).join('')
+        : '';
 
-        <div class="size-container">
-          <select class="size-select">
-            ${product.sizes.map(s => `<option>${s}</option>`).join('')}
-          </select>
+      container.innerHTML += `
+        <div class="col-md-3">
+          <div class="product-card">
+            <img src="${product.image}" class="product-image" alt="${product.title}">
+            <div class="product-title">${product.title}</div>
+            <div class="product-price">${product.price} tg</div>
+
+            ${sizes ? `
+              <div class="size-container">
+                <select class="size-select">${sizes}</select>
+              </div>` : ''
+            }
+
+            <button class="btn btn-dark w-100 mt-2">
+              Add to cart
+            </button>
+          </div>
         </div>
+      `;
+    });
+  }
 
-        <button
-          class="btn btn-dark w-100 mt-2 add-to-cart"
-          data-id="${product._id}"
-          data-title="${product.title}"
-          data-price="${product.price}"
-        >
-          Add to cart
-        </button>
-      </div>
-    `;
+  // INITIAL LOAD
+  loadProducts('?inStock=true');
 
-    container.appendChild(col);
-  });
-}
+  // FILTERS
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams(new FormData(form));
+      params.append('inStock', 'true');
+      const query = '?' + params.toString();
+      console.log('FETCH:', query);
+      loadProducts(query);
+    });
+
+    form.addEventListener('reset', () => {
+      setTimeout(() => loadProducts('?inStock=true'), 0);
+    });
+  }
+});

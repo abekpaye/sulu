@@ -245,3 +245,15 @@ footer {
 .social-links a:hover {
   color: #999;
 }
+
+#filter-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+#filter-form input,
+#filter-form select {
+  border-radius: 8px;
+}
