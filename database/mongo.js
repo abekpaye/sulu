@@ -1,23 +1,22 @@
 const { MongoClient } = require('mongodb');
 
-const MONGO_URL = 'mongodb://127.0.0.1:27017';
-const DB_NAME = 'sulu';
+const MONGO_URI = process.env.MONGO_URI;
+const DB_NAME = process.env.DB_NAME || "sulu";
 
 let client;
 let db;
 
 async function connectDB() {
-  try {
-    client = new MongoClient(MONGO_URL);
-    await client.connect();
-
-    db = client.db(DB_NAME);
-
-    console.log('MongoDB connected to database:', DB_NAME);
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
+  if (!MONGO_URI) {
+    console.error("MONGO_URI is missing");
     process.exit(1);
   }
+
+  client = new MongoClient(MONGO_URI);
+  await client.connect();
+  db = client.db(DB_NAME);
+
+  console.log("MongoDB connected:", DB_NAME);
 }
 
 function getDB() {

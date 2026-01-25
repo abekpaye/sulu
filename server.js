@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require('express');
 const path = require('path');
 const { connectDB } = require('./database/mongo');
@@ -60,8 +62,8 @@ app.use('/api', (req, res) => {
   res.status(404).json({ error: 'API route not found' });
 });
 
+const PORT = process.env.PORT || 3000;
+
 connectDB().then(() => {
-  app.listen(3000, () => {
-    console.log('Server running at http://localhost:3000');
-  });
+  app.listen(PORT, () => console.log("Server running on port", PORT));
 });
