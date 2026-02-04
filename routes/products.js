@@ -4,6 +4,11 @@ const { getDB } = require('../database/mongo');
 
 const router = express.Router();
 
+// middleware from server.js
+function isAuthenticated(req, res, next) {
+  return req.app.locals.isAuthenticated(req, res, next);
+}
+
 
    //GET ALL PRODUCTS
    
@@ -93,8 +98,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-router.post('/', async (req, res) => {
+// POST
+router.post('/', isAuthenticated, async (req, res) => {
   try {
     const { title, price, category, sizes, image, inStock } = req.body;
 
@@ -123,7 +128,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+// PUT
+router.put('/:id', isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -148,7 +154,9 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+
+// DELETE
+router.delete('/:id', isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
 
