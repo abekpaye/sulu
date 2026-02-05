@@ -60,4 +60,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", (req, res) => {
+  if (!req.session || !req.session.userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  res.json({
+    userId: req.session.userId,
+    role: req.session.role
+  });
+});
+
+
 module.exports = router;

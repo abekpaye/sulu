@@ -21,10 +21,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      httpOnly: true,
-      secure: false, 
-      maxAge: 1000 * 60 * 60
-    }
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 1000 * 60 * 60
+  }
+
   })
 );
 
@@ -53,14 +54,16 @@ function isAuthenticated(req, res, next) {
   next();
 }
 
+
+app.locals.isAuthenticated = isAuthenticated;
+
 function requireLoginPage(req, res, next) {
-  if (!req.session || !req.session.userId) {
+  if (!req.session.userId) {
     return res.redirect("/login");
   }
   next();
 }
 
-app.locals.isAuthenticated = isAuthenticated;
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
@@ -98,16 +101,8 @@ app.get("/checkout", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "checkout.html"));
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", requireLoginPage, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "admin.html"));
-});
-
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "login.html"));
-});
-
-app.get("/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "register.html"));
 });
 
 /* API */
@@ -121,7 +116,7 @@ app.use("/api", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(` Server running at http://localhost:${PORT}`);
-  });
+  app.listen(PORT, () =>
+    console.log("Server running on port", PORT)
+  );
 });
