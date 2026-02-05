@@ -26,9 +26,17 @@ form.addEventListener("submit", async (e) => {
 
     show("Logged succesfully", true);
 
-    setTimeout(() => {
-      window.location.href = "/admin";
+    setTimeout(async () => {
+      const meRes = await fetch("/api/auth/me");
+      const me = await meRes.json();
+
+      if (me.role === "admin") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/";
+      }
     }, 400);
+
 
   } catch (err) {
     show("Network error");

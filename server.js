@@ -58,6 +58,14 @@ function requireLoginPage(req, res, next) {
   next();
 }
 
+function requireAdminPage(req, res, next) {
+  if (!req.session.userId || req.session.role !== "admin") {
+    return res.redirect("/");
+  }
+  next();
+}
+
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });

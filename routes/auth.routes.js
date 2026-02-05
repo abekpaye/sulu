@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
     await db.collection("users").insertOne({
       email,
       password: hashedPassword,
-      role: "admin", // ← ВАЖНО: чтобы админка работала
+      role: "user", 
       createdAt: new Date()
     });
 
