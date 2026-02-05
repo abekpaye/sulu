@@ -10,8 +10,6 @@ const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
-/*  MIDDLEWARE */
-
 app.use(express.json());
 
 app.use(
@@ -21,11 +19,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 1000 * 60 * 60
-  }
-
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60
+    }
   })
 );
 
@@ -45,15 +42,12 @@ app.post("/logout", (req, res) => {
   });
 });
 
-/* AUTH MIDDLEWARE */
-
 function isAuthenticated(req, res, next) {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Unauthorized" });
   }
   next();
 }
-
 
 app.locals.isAuthenticated = isAuthenticated;
 
@@ -63,7 +57,6 @@ function requireLoginPage(req, res, next) {
   }
   next();
 }
-
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
@@ -101,11 +94,17 @@ app.get("/checkout", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "checkout.html"));
 });
 
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "register.html"));
+});
+
 app.get("/admin", requireLoginPage, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "admin.html"));
 });
-
-/* API */
 
 app.use("/api/products", productsRoutes);
 
@@ -116,7 +115,5 @@ app.use("/api", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {
-  app.listen(PORT, () =>
-    console.log("Server running on port", PORT)
-  );
+  app.listen(PORT, () => console.log("Server running on port", PORT));
 });
