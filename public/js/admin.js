@@ -11,10 +11,44 @@ const sizesInput = document.getElementById('sizes');
 const imageInput = document.getElementById('image');
 const inStockInput = document.getElementById('inStock');
 
+const adminOnlyBox = document.getElementById('adminOnly');
+
+let isAdmin = false;
+
+function show(text, ok = false) {
+  if (!message) return;
+  message.innerHTML = `<div class="alert ${ok ? 'alert-success' : 'alert-danger'}">${text}</div>`;
+}
+
+async function loadMe() {
+  try {
+    const res = await fetch('/api/auth/me');
+    if (!res.ok) {
+      window.location.href = '/login';
+      return false;
+    }
+    const me = await res.json();
+    isAdmin = me.role === 'admin';
+
+    if (!isAdmin) {
+      if (adminOnlyBox) adminOnlyBox.style.display = 'none';
+      if (form) form.style.display = 'none'; 
+    }
+    return true;
+  } catch (e) {
+    show('Network error. Try again.', false);
+    return false;
+  }
+}
+
 async function loadProducts() {
-  const res = await fetch('/api/products');
-  const products = await res.json();
-  renderProducts(products);
+  try {
+    const res = await fetch('/api/products');
+    const products = await res.json();
+    renderProducts(Array.isArray(products) ? products : []);
+  } catch (e) {
+    show('Failed to load products', false);
+  }
 }
 
 function renderProducts(products) {
@@ -26,87 +60,146 @@ function renderProducts(products) {
 
     div.innerHTML = `
       <div class="card p-3">
-        <h5>${p.title}</h5>
-        <p>${p.price} tg</p>
-        <small>${p.category}</small>
+        <h5>${escapeHtml(p.title || '')}</h5>
+        <p>${Number(p.price ?? 0)} tg</p>
+        <small>${escapeHtml(p.category || '')}</small>
 
-        <div class="mt-2 d-flex gap-2">
-          <button class="btn btn-sm btn-outline-dark">Edit</button>
-          <button class="btn btn-sm btn-outline-danger">Delete</button>
-        </div>
+        ${
+          isAdmin
+            ? `
+              <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-sm btn-outline-dark edit-btn">Edit</button>
+                <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
+              </div>
+            `
+            : `
+              <div class="mt-2">
+                <small class="text-muted">Read-only mode (no admin rights)</small>
+              </div>
+            `
+        }
       </div>
     `;
 
-    div.querySelector('.btn-outline-dark')
-      .addEventListener('click', () => startEdit(p));
+    if (isAdmin) {
+      div.querySelector('.edit-btn')
+        .addEventListener('click', () => startEdit(p));
 
-    div.querySelector('.btn-outline-danger')
-      .addEventListener('click', () => deleteProduct(p._id));
+      div.querySelector('.delete-btn')
+        .addEventListener('click', () => deleteProduct(p._id));
+    }
 
     productsList.appendChild(div);
   });
 }
 
-form.addEventListener('submit', async (e) => {
+function escapeHtml(s = '') {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  if (!isAdmin) {
+    show('You do not have admin rights.', false);
+    return;
+  }
 
   const product = {
     title: titleInput.value,
     price: Number(priceInput.value),
     category: categoryInput.value,
-    sizes: sizesInput.value.split(',').map(s => s.trim()),
+    sizes: (sizesInput.value || '').split(',').map(s => s.trim()).filter(Boolean),
     image: imageInput.value,
     inStock: inStockInput.checked
   };
 
   const id = editingIdInput.value;
 
-  if (id) {
-    await fetch(`/api/products/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product)
-    });
+  try {
+    if (id) {
+      const res = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product)
+      });
 
-    message.innerHTML = `<div class="alert alert-success">Updated</div>`;
-  } else {
-    await fetch('/api/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product)
-    });
+      if (!res.ok) {
+        const data = await safeJson(res);
+        return show(data?.message || 'Update failed', false);
+      }
 
-    message.innerHTML = `<div class="alert alert-success">Added</div>`;
+      show('Updated', true);
+    } else {
+      const res = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product)
+      });
+
+      if (!res.ok) {
+        const data = await safeJson(res);
+        return show(data?.message || 'Add failed', false);
+      }
+
+      show('Added', true);
+    }
+
+    resetForm();
+    loadProducts();
+  } catch (e2) {
+    show('Network error. Try again.', false);
   }
-
-  resetForm();
-  loadProducts();
 });
 
+async function safeJson(res) {
+  try { return await res.json(); } catch { return null; }
+}
+
 function startEdit(p) {
+  if (!isAdmin) return;
+
   editingIdInput.value = p._id;
 
-  titleInput.value = p.title;
-  priceInput.value = p.price;
-  categoryInput.value = p.category;
-  sizesInput.value = p.sizes.join(',');
-  imageInput.value = p.image;
-  inStockInput.checked = p.inStock;
+  titleInput.value = p.title || '';
+  priceInput.value = p.price ?? '';
+  categoryInput.value = p.category || '';
+  sizesInput.value = Array.isArray(p.sizes) ? p.sizes.join(',') : '';
+  imageInput.value = p.image || '';
+  inStockInput.checked = !!p.inStock;
 
   submitBtn.textContent = 'Save changes';
 }
 
 async function deleteProduct(id) {
+  if (!isAdmin) return;
+
   if (!confirm('Delete this product?')) return;
 
-  await fetch(`/api/products/${id}`, { method: 'DELETE' });
-  loadProducts();
+  try {
+    const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const data = await safeJson(res);
+      return show(data?.message || 'Delete failed', false);
+    }
+    loadProducts();
+  } catch (e) {
+    show('Network error. Try again.', false);
+  }
 }
 
 function resetForm() {
-  form.reset();
+  form?.reset();
   editingIdInput.value = '';
   submitBtn.textContent = 'Add product';
 }
 
-loadProducts();
+(async function init() {
+  const ok = await loadMe();
+  if (ok) loadProducts();
+})();

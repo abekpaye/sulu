@@ -10,7 +10,17 @@
 
   <a href="/" class="btn btn-outline-secondary mb-4">← Home</a>
   <h1 class="mb-4">Admin Panel</h1>
+  
+<button id="logoutBtn" class="btn btn-outline-danger mb-4 ms-2">Logout</button>
 
+<script>
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await fetch("/logout", { method: "POST" });
+    window.location.href = "/";
+  });
+</script>
+
+  <div id="adminOnly">
   <form id="product-form">
 
     <input type="hidden" id="editingId">
@@ -53,6 +63,7 @@
       Add product
     </button>
   </form>
+  </div>
 
   <div id="message" class="mt-3"></div>
 

@@ -53,6 +53,13 @@ function isAuthenticated(req, res, next) {
   next();
 }
 
+function requireLoginPage(req, res, next) {
+  if (!req.session || !req.session.userId) {
+    return res.redirect("/login");
+  }
+  next();
+}
+
 app.locals.isAuthenticated = isAuthenticated;
 
 app.get("/", (req, res) => {
@@ -93,6 +100,14 @@ app.get("/checkout", (req, res) => {
 
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "admin.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "register.html"));
 });
 
 /* API */
