@@ -1,0 +1,30 @@
+{
+  "name": "midterm_project",
+  "version": "1.0.0",
+  "description": "This project is a simple e-commerce web application built with **Node.js** and **Express.js**.   The main goal of this project is to demonstrate **server-side request handling**, including routing, middleware usage, query and route parameters, form handling, and returning HTML and JSON responses.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abekpaye/sulu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abekpaye/sulu/issues"
+  },
+  "homepage": "https://github.com/abekpaye/sulu#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.1.6"
+  }
+}
