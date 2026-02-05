@@ -10,6 +10,14 @@ function isAuthenticated(req, res, next) {
   return req.app.locals.isAuthenticated(req, res, next);
 }
 
+
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.role === "admin") {
+    return next();
+  }
+  return res.status(403).json({ message: "Admin access required" });
+}
+
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
   try {
@@ -91,103 +99,122 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST (protected + validation)
-router.post("/", isAuthenticated, validateProduct, async (req, res) => {
-  try {
-    const db = getDB();
-    const { title, price, category, sizes, image, inStock } = req.body;
+// POST 
 
-    // strict required fields
-    if (!title || price === undefined || !category) {
-      return res.status(400).json({ error: "Missing required fields" });
+router.post(
+  "/",
+  isAuthenticated,
+  requireAdmin, 
+  validateProduct,
+  async (req, res) => {
+    try {
+      const db = getDB();
+      const { title, price, category, sizes, image, inStock } = req.body;
+
+      // strict required fields
+      if (!title || price === undefined || !category) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const doc = {
+        title: String(title).trim(),
+        price: Number(price),
+        category: String(category).trim(),
+        sizes: Array.isArray(sizes) ? sizes : [],
+        image: typeof image === "string" ? image : "",
+        inStock: typeof inStock === "boolean" ? inStock : true,
+        createdAt: new Date(),
+      };
+
+      const result = await db.collection("products").insertOne(doc);
+
+      res.status(201).json({
+        message: "Product created",
+        id: result.insertedId,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
     }
-
-    const doc = {
-      title: String(title).trim(),
-      price: Number(price),
-      category: String(category).trim(),
-      sizes: Array.isArray(sizes) ? sizes : [],
-      image: typeof image === "string" ? image : "",
-      inStock: typeof inStock === "boolean" ? inStock : true,
-      createdAt: new Date(),
-    };
-
-    const result = await db.collection("products").insertOne(doc);
-
-    res.status(201).json({
-      message: "Product created",
-      id: result.insertedId,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
   }
-});
+);
 
-// PUT (protected + validation)
-router.put("/:id", isAuthenticated, validateProduct, async (req, res) => {
-  try {
-    const { id } = req.params;
 
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid ID" });
+router.put(
+  "/:id",
+  isAuthenticated,
+  requireAdmin, 
+  validateProduct,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID" });
+      }
+
+      // prevent updating _id
+      const update = { ...req.body };
+      delete update._id;
+
+      // If they send empty body, block it
+      if (!update || Object.keys(update).length === 0) {
+        return res.status(400).json({ error: "No fields to update" });
+      }
+
+      // normalize types (optional but clean)
+      if (update.price !== undefined) update.price = Number(update.price);
+      if (update.title !== undefined) update.title = String(update.title).trim();
+      if (update.category !== undefined)
+        update.category = String(update.category).trim();
+      if (update.image !== undefined) update.image = String(update.image);
+
+      const db = getDB();
+      const result = await db.collection("products").updateOne(
+        { _id: new ObjectId(id) },
+        { $set: update }
+      );
+
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      res.status(200).json({ message: "Product updated" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
     }
-
-    // prevent updating _id
-    const update = { ...req.body };
-    delete update._id;
-
-    // If they send empty body, block it
-    if (!update || Object.keys(update).length === 0) {
-      return res.status(400).json({ error: "No fields to update" });
-    }
-
-    // normalize types (optional but clean)
-    if (update.price !== undefined) update.price = Number(update.price);
-    if (update.title !== undefined) update.title = String(update.title).trim();
-    if (update.category !== undefined) update.category = String(update.category).trim();
-    if (update.image !== undefined) update.image = String(update.image);
-
-    const db = getDB();
-    const result = await db.collection("products").updateOne(
-      { _id: new ObjectId(id) },
-      { $set: update }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    res.status(200).json({ message: "Product updated" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
   }
-});
+);
 
-// DELETE (protected)
-router.delete("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const { id } = req.params;
+// DELETE 
+router.delete(
+  "/:id",
+  isAuthenticated,
+  requireAdmin, 
+  async (req, res) => {
+    try {
+      const { id } = req.params;
 
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid ID" });
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID" });
+      }
+
+      const db = getDB();
+      const result = await db.collection("products").deleteOne({
+        _id: new ObjectId(id),
+      });
+
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      res.status(200).json({ message: "Product deleted" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
     }
-
-    const db = getDB();
-    const result = await db.collection("products").deleteOne({
-      _id: new ObjectId(id),
-    });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    res.status(200).json({ message: "Product deleted" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
   }
-});
+);
 
 module.exports = router;
