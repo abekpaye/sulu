@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
+const { getDB } = require("../database/mongo");
 
 const router = express.Router();
 
@@ -13,21 +13,25 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Invalid data" });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const db = getDB();
+
+    const existing = await db.collection("users").findOne({ email });
+    if (existing) {
       return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({
+    await db.collection("users").insertOne({
       email,
       password: hashedPassword,
-      role: "user",
+      role: "admin", // ← ВАЖНО: чтобы админка работала
+      createdAt: new Date()
     });
 
     res.status(201).json({ message: "User registered" });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -41,13 +45,15 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid data" });
     }
 
-    const user = await User.findOne({ email });
+    const db = getDB();
+    const user = await db.collection("users").findOne({ email });
+
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -56,12 +62,14 @@ router.post("/login", async (req, res) => {
 
     res.json({ message: "Logged in successfully" });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// ME
 router.get("/me", (req, res) => {
-  if (!req.session || !req.session.userId) {
+  if (!req.session?.userId) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
@@ -70,6 +78,5 @@ router.get("/me", (req, res) => {
     role: req.session.role
   });
 });
-
 
 module.exports = router;
