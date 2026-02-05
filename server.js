@@ -3,10 +3,10 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const bcrypt = require("bcrypt");
 
 const { connectDB } = require("./database/mongo");
 const productsRoutes = require("./routes/products");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
@@ -35,49 +35,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, "public")));
 
-
-
-const users = [];
-
-
-
-app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "Invalid input" });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  users.push({
-    id: users.length + 1,
-    email,
-    password: hashedPassword
-  });
-
-  res.status(201).json({ message: "User registered" });
-});
-
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = users.find(u => u.email === email);
-
-  if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  req.session.userId = user.id;
-
-  res.json({ message: "Login successful" });
-});
+app.use("/api/auth", authRoutes);
 
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
@@ -96,8 +54,6 @@ function isAuthenticated(req, res, next) {
 }
 
 app.locals.isAuthenticated = isAuthenticated;
-
-
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
@@ -146,8 +102,6 @@ app.use("/api/products", productsRoutes);
 app.use("/api", (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 
