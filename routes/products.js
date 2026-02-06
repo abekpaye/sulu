@@ -5,7 +5,6 @@ const { validateProduct } = require("../middleware/validateProduct");
 
 const router = express.Router();
 
-// middleware from server.js
 function isAuthenticated(req, res, next) {
   return req.app.locals.isAuthenticated(req, res, next);
 }
@@ -18,41 +17,34 @@ function requireAdmin(req, res, next) {
   return res.status(403).json({ message: "Admin access required" });
 }
 
-// GET ALL PRODUCTS
 router.get("/", async (req, res) => {
   try {
     const db = getDB();
     const filter = {};
 
-    // inStock
     if (req.query.inStock !== undefined) {
       filter.inStock = req.query.inStock === "true";
     }
 
-    // category
     if (req.query.category) {
       filter.category = req.query.category;
     }
 
-    // title search (name)
     if (req.query.name) {
       filter.title = { $regex: req.query.name, $options: "i" };
     }
 
-    // price range
     if (req.query.minPrice || req.query.maxPrice) {
       filter.price = {};
       if (req.query.minPrice) filter.price.$gte = Number(req.query.minPrice);
       if (req.query.maxPrice) filter.price.$lte = Number(req.query.maxPrice);
     }
 
-    // sorting
     const sort = {};
     if (req.query.sortBy) {
       sort[req.query.sortBy] = req.query.order === "desc" ? -1 : 1;
     }
 
-    // projection
     const projection = {};
     if (req.query.fields) {
       req.query.fields.split(",").forEach((field) => {
@@ -74,7 +66,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET PRODUCT BY ID
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -99,8 +90,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST 
-
 router.post(
   "/",
   isAuthenticated,
@@ -111,7 +100,6 @@ router.post(
       const db = getDB();
       const { title, price, category, sizes, image, inStock } = req.body;
 
-      // strict required fields
       if (!title || price === undefined || !category) {
         return res.status(400).json({ error: "Missing required fields" });
       }
@@ -153,16 +141,13 @@ router.put(
         return res.status(400).json({ error: "Invalid ID" });
       }
 
-      // prevent updating _id
       const update = { ...req.body };
       delete update._id;
 
-      // If they send empty body, block it
       if (!update || Object.keys(update).length === 0) {
         return res.status(400).json({ error: "No fields to update" });
       }
 
-      // normalize types (optional but clean)
       if (update.price !== undefined) update.price = Number(update.price);
       if (update.title !== undefined) update.title = String(update.title).trim();
       if (update.category !== undefined)
@@ -187,7 +172,6 @@ router.put(
   }
 );
 
-// DELETE 
 router.delete(
   "/:id",
   isAuthenticated,

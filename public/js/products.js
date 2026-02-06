@@ -45,10 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // INITIAL LOAD
   loadProducts('?inStock=true');
 
-  // FILTERS
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
