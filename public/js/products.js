@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : '';
 
       container.innerHTML += `
-        <div class="col-md-3">
+        <div class="col-6 col-md-4 col-lg-2">
           <div class="product-card">
             <img src="${product.image}" class="product-image" alt="${product.title}">
             <div class="product-title">${product.title}</div>

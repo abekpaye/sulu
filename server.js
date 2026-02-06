@@ -4,7 +4,7 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 
-const { connectDB } = require("./database/mongo");
+const { connectDB } = require("./config/mongo");
 const productsRoutes = require("./routes/products");
 const authRoutes = require("./routes/auth.routes");
 

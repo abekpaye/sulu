@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { getDB } = require("../database/mongo");
+const { getDB } = require("../config/mongo");
 
 const router = express.Router();
 

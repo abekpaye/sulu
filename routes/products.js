@@ -1,6 +1,6 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const { getDB } = require("../database/mongo");
+const { getDB } = require("../config/mongo");
 const { validateProduct } = require("../middleware/validateProduct");
 
 const router = express.Router();
