@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   session({
     name: "sessionId",
-    secret: process.env.SESSION_SECRET || "secret-key",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -76,22 +76,6 @@ app.get("/about", (req, res) => {
 
 app.get("/cart", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "cart.html"));
-});
-
-app.get("/tops", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "tops.html"));
-});
-
-app.get("/bottoms", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "bottoms.html"));
-});
-
-app.get("/pyjamas", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "pyjamas.html"));
-});
-
-app.get("/best-sellers", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "best_sellers.html"));
 });
 
 app.get("/chart", (req, res) => {

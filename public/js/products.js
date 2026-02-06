@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>` : ''
             }
 
-            <button class="btn btn-dark w-100 mt-2">
+            <button class="add-to-cart btn btn-dark w-100 mt-2">
               Add to cart
             </button>
           </div>
