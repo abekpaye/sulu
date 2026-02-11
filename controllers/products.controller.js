@@ -25,7 +25,9 @@ async function getProducts(req, res) {
       filter.title = { $regex: name, $options: "i" };
     }
 
-    if (category) {
+    const allowedCategories = ["tops", "bottoms", "pyjamas"];
+
+    if (category && allowedCategories.includes(category)) {
       filter.category = category;
     }
 
@@ -43,15 +45,31 @@ async function getProducts(req, res) {
     const limitNum = Math.min(Math.max(Number(limit), 1), 50); 
     const skip = (pageNum - 1) * limitNum;
 
+    const allowedFields = [
+      "title",
+      "price",
+      "category",
+      "image",
+      "sizes",
+      "inStock"
+    ];
+
     let projection = {};
+
     if (fields) {
       fields.split(",").forEach(f => {
-        projection[f.trim()] = 1;
+        const trimmed = f.trim();
+        if (allowedFields.includes(trimmed)) {
+          projection[trimmed] = 1;
+        }
       });
     }
 
+    const allowedSortFields = ["price", "title", "category"];
+
     let sort = {};
-    if (sortBy) {
+
+    if (sortBy && allowedSortFields.includes(sortBy)) {
       sort[sortBy] = order === "desc" ? -1 : 1;
     }
 
