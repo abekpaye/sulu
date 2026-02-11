@@ -44,8 +44,9 @@ async function loadMe() {
 async function loadProducts() {
   try {
     const res = await fetch('/api/products');
-    const products = await res.json();
-    renderProducts(Array.isArray(products) ? products : []);
+    const result = await res.json();
+
+    renderProducts(Array.isArray(result.data) ? result.data : []);
   } catch (e) {
     show('Failed to load products', false);
   }
