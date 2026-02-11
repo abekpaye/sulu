@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.addEventListener("DOMContentLoaded", async () => {
+
   const form = document.getElementById("checkout-form");
   const totalEl = document.getElementById("total-price");
   const deliveryEl = document.getElementById("delivery-price");
@@ -7,10 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("success-modal");
 
   const DELIVERY_COST = 1000;
+
+  
+  const res = await fetch("/api/orders/cart");
+
+  if (!res.ok) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const data = await res.json();
+  const cart = data.items || [];
+
   const total = cart.reduce(
-    (sum, item) => sum + parseInt(item.price.replace("tg", "")) * item.quantity,
+    (sum, item) => sum + item.price * item.quantity,
     0
   );
+
   const full = total + DELIVERY_COST;
 
   totalEl.textContent = `${total} tg`;
@@ -30,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const emailItems = cart.map(item => ({
       title: item.title,
-      size: item.size,
       quantity: item.quantity,
       price: item.price
     }));
@@ -56,13 +68,17 @@ document.addEventListener("DOMContentLoaded", () => {
         emailData
       );
 
-      localStorage.removeItem("cart");
+      await fetch("/api/orders/checkout", {
+        method: "POST"
+      });
+
       form.reset();
       form.style.display = "none";
       modal.style.display = "block";
 
     } catch (err) {
-      alert("⚠️ Something went wrong while sending your order. Please try again.");
+      alert("⚠️ Something went wrong. Please try again.");
     }
   });
+
 });

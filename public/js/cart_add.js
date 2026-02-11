@@ -1,44 +1,52 @@
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async (e) => {
   if (!e.target.classList.contains("add-to-cart")) return;
 
-  const button = e.target;
-  const productCard = button.closest(".product-card");
+  const productId = e.target.dataset.id;
 
-  const title = productCard.querySelector(".product-title").textContent;
-  const price = productCard.querySelector(".product-price").textContent;
-  const image = productCard.querySelector(".product-image")?.src || "";
-  const size = productCard.querySelector(".size-select")?.value || null;
+  try {
+    const res = await fetch("/api/orders/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ productId })
+    });
 
-  const product = {
-    id: button.dataset.id,
-    title,
-    price,
-    image,
-    size,
-    quantity: 1
-  };
+    if (res.status === 401) {
+      alert("Please log in first.");
+      return;
+    }
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!res.ok) {
+      alert("Failed to add to cart.");
+      return;
+    }
 
-  const existing = cart.find(
-    item => item.id === product.id && item.size === product.size
-  );
+    updateCartCount();
 
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push(product);
+  } catch (err) {
+    console.error(err);
   }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCount();
 });
 
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const el = document.getElementById("cart-count");
-  if (el) el.textContent = total;
+
+async function updateCartCount() {
+  try {
+    const res = await fetch("/api/orders/cart");
+
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const cart = data.items || [];
+
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const el = document.getElementById("cart-count");
+
+    if (el) el.textContent = total;
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", updateCartCount);

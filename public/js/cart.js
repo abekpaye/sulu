@@ -3,17 +3,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalBox = document.getElementById("cart-total");
   const purchaseBtn = document.querySelector(".purchase-btn");
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = [];
+
+  async function loadCart() {
+    try {
+      const res = await fetch("/api/orders/cart");
+
+      if (res.status === 401) {
+        cart = [];
+        renderCart();
+        return;
+      }
+
+      const data = await res.json();
+      cart = data.items || [];
+      renderCart();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   function renderCart() {
     cartContainer.innerHTML = "";
     let total = 0;
 
     if (cart.length === 0) {
-      cartContainer.innerHTML = "<p style='text-align:center; color:#666;'>Your cart is empty.</p>";
+      cartContainer.innerHTML =
+        "<p style='text-align:center; color:#666;'>Your cart is empty.</p>";
     }
 
-    cart.forEach((item, index) => {
+    cart.forEach(item => {
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("cart-item");
 
@@ -21,39 +40,33 @@ document.addEventListener("DOMContentLoaded", function () {
         <img src="${item.image}" alt="${item.title}">
         <div class="item-details">
           <h2>${item.title}</h2>
-          <p>Size: ${item.size}</p>
-          <p>Price: ${item.price}</p>
-          <p class="quantity">Quantity: ${item.quantity}</p>
+          <p>Price: ${item.price} tg</p>
+          <p>Quantity: ${item.quantity}</p>
         </div>
-        <div class="item-actions">
-          <button class="remove-btn" data-index="${index}">Remove</button>
-        </div>
+        <button class="remove-btn" data-id="${item.productId}">
+          Remove
+        </button>
       `;
 
       cartContainer.appendChild(itemDiv);
-
-      total += parseInt(item.price.replace(/\D/g, "")) * item.quantity;
+      total += item.price * item.quantity;
     });
 
     totalBox.textContent = `Total: ${total} tg`;
 
+    // REMOVE
     document.querySelectorAll(".remove-btn").forEach(button => {
-      button.addEventListener("click", e => {
-        const index = e.target.dataset.index;
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        renderCart();
+      button.addEventListener("click", async () => {
+        const productId = button.dataset.id;
+
+        await fetch(`/api/orders/cart/remove/${productId}`, {
+          method: "DELETE"
+        });
+
+        loadCart();
       });
     });
   }
 
-  purchaseBtn.addEventListener("click", function (e) {
-    const total = parseInt(totalBox.textContent.replace(/\D/g, ""));
-    if (total === 0) {
-      e.preventDefault(); 
-      alert("Your cart is empty. Cannot proceed to checkout."); 
-    }
-  });
-
-  renderCart();
+  loadCart();
 });

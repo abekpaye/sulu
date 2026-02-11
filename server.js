@@ -10,6 +10,7 @@ const { isAdmin } = require("./middleware/auth");
 const productsRoutes = require("./routes/products.routes");
 const adminProductsRoutes = require("./routes/admin.products.routes");
 const authRoutes = require("./routes/auth.routes");
+const ordersRoutes = require("./routes/orders.routes");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes); 
 app.use("/api/admin/products", adminProductsRoutes); 
+app.use("/api/orders", ordersRoutes);
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "index.html"))
