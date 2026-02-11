@@ -14,7 +14,9 @@ async function getProducts(req, res) {
       sortBy,
       order = "asc",
       fields,
-      inStock
+      inStock,
+      page = 1,
+      limit = 12
     } = req.query;
 
     const filter = {};
@@ -37,6 +39,10 @@ async function getProducts(req, res) {
       filter.inStock = inStock === "true";
     }
 
+    const pageNum = Math.max(Number(page), 1);
+    const limitNum = Math.min(Math.max(Number(limit), 1), 50); 
+    const skip = (pageNum - 1) * limitNum;
+
     let projection = {};
     if (fields) {
       fields.split(",").forEach(f => {
@@ -49,13 +55,23 @@ async function getProducts(req, res) {
       sort[sortBy] = order === "desc" ? -1 : 1;
     }
 
+    const total = await collection.countDocuments(filter);
+
     const products = await collection
       .find(filter)
       .project(projection)
       .sort(sort)
+      .skip(skip)
+      .limit(limitNum)
       .toArray();
 
-    res.json(products);
+      res.json({
+        total,
+        page: pageNum,
+        pages: Math.ceil(total / limitNum),
+        limit: limitNum,
+        data: products
+    });
 
   } catch (err) {
     console.error(err);
