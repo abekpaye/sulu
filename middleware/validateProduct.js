@@ -3,6 +3,12 @@ const allowedCategories = ["tops", "bottoms", "pyjamas"];
 function validateProduct(req, res, next) {
   const { title, price, category, sizes, image, inStock } = req.body;
 
+  if (req.method === "POST") {
+  if (!title || price == null || !category) {
+    return res.status(400).json({ error: "Missing required fields" });
+    }
+  }
+
   if (title !== undefined) {
     if (typeof title !== "string" || title.trim().length < 2) {
       return res.status(400).json({ error: "Invalid title" });

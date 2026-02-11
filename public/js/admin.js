@@ -123,7 +123,7 @@ form?.addEventListener('submit', async (e) => {
 
   try {
     if (id) {
-      const res = await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/admin/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(product)
@@ -136,7 +136,7 @@ form?.addEventListener('submit', async (e) => {
 
       show('Updated', true);
     } else {
-      const res = await fetch('/api/products', {
+      const res = await fetch('/api/admin/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(product)
@@ -182,7 +182,7 @@ async function deleteProduct(id) {
   if (!confirm('Delete this product?')) return;
 
   try {
-    const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+    const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
     if (!res.ok) {
       const data = await safeJson(res);
       return show(data?.message || 'Delete failed', false);

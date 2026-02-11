@@ -1,3 +1,12 @@
+function escapeHtml(s = '') {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('filter-form');
   const container = document.getElementById('products-row');
@@ -20,15 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     products.forEach(product => {
       const sizes = Array.isArray(product.sizes)
-        ? product.sizes.map(s => `<option>${s}</option>`).join('')
-        : '';
+      ? product.sizes.map(s => `<option>${escapeHtml(s)}</option>`).join('')
+      : '';
 
       container.innerHTML += `
         <div class="col-6 col-md-4 col-lg-2">
           <div class="product-card">
-            <img src="${product.image}" class="product-image" alt="${product.title}">
-            <div class="product-title">${product.title}</div>
-            <div class="product-price">${product.price} tg</div>
+            <img src="${escapeHtml(product.image)}" 
+            class="product-image" 
+            alt="${escapeHtml(product.title)}">
+
+            <div class="product-title">
+            ${escapeHtml(product.title)}
+            </div>
+
+            <div class="product-price">
+            ${Number(product.price ?? 0)} tg
+            </div>
 
             ${sizes ? `
               <div class="size-container">
@@ -36,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>` : ''
             }
 
-            <button class="add-to-cart btn btn-dark w-100 mt-2">
+            <button class="add-to-cart btn btn-dark w-100 mt-2" data-id="${product._id}">
               Add to cart
             </button>
           </div>
